@@ -31,6 +31,23 @@
     padding: 8px 14px;
   }
 
+  .fc-list-now-indicator {
+    border-top: red solid 2px;
+    position: relative;
+    margin-left: 126px;
+
+    &::before {
+      background: red;
+      -webkit-border-radius: 50%;
+      border-radius: 50%;
+      content: "";
+      position: absolute;
+      height: 12px;
+      margin-top: -7px;
+      width: 12px;
+      z-index: 504;
+    }
+  }
 
   // date heading rows
   // ----------------------------------------------------------------------------------------------------
@@ -64,3 +81,5 @@
 // make the dot closer to the event title
 .fc-direction-ltr .fc-list-table .fc-list-event-graphic { padding-right: 0 }
 .fc-direction-rtl .fc-list-table .fc-list-event-graphic { padding-left: 0 }
+
+

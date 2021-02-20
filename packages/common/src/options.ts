@@ -65,6 +65,8 @@ export const BASE_OPTION_REFINERS = {
   titleRangeSeparator: String,
   forceEventDuration: Boolean,
 
+  listColumns: identity as Identity<any>,
+
   dayHeaders: Boolean,
   dayHeaderFormat: createFormatter,
   dayHeaderClassNames: identity as Identity<ClassNamesGenerator<DayHeaderContentArg>>,

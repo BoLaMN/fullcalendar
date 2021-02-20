@@ -14,6 +14,28 @@ interface HookProps extends DayHeaderContentArg { // doesn't enforce much since 
 }
 
 export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
+
+  renderCustomColumns() {
+    const { options, theme } = this.context
+    const { dayDate } = this.props
+
+    const listColumns = options.listColumns || []
+
+    return listColumns.map(function([ columnHeader ]) {
+      if (typeof columnHeader === 'function') {
+        return columnHeader(dayDate, this)
+      } else {
+        return (
+          <th>
+            <div className={'fc-list-day-cushion ' + theme.getClass('tableCellShaded')}>
+              { columnHeader }
+            </div>
+          </th>
+        )
+      }
+    })
+  }
+
   render() {
     let { dayDate, todayRange } = this.props
     let { theme, dateEnv, options, viewApi } = this.context
@@ -63,6 +85,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
                 {innerContent}
               </div>
             </th>
+            this.renderCustomColumns()
           </tr>
         )}
       </RenderHook>

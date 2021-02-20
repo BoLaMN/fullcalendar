@@ -23,6 +23,7 @@ import {
   DateComponent,
   ViewApi,
   MountArg,
+  NowIndicatorRoot
 } from '@fullcalendar/common'
 import { ListViewHeaderRow } from './ListViewHeaderRow'
 import { ListViewEventRow } from './ListViewEventRow'
@@ -40,6 +41,23 @@ Responsible for the scroller, and forwarding event-related actions into the "gri
 export class ListView extends DateComponent<ViewProps> {
   private computeDateVars = memoize(computeDateVars)
   private eventStoreToSegs = memoize(this._eventStoreToSegs)
+
+  renderNowIndicator(nowDate: DateMarker) {
+    return (
+      <NowIndicatorRoot
+        isAxis={false}
+        date={nowDate}
+      >
+        {(rootElRef, classNames, innerElRef, innerContent) => (
+          <tr
+            ref={rootElRef}
+            className={['fc-list-now-indicator-line'].concat(classNames).join(' ')}
+          >
+          </tr>
+        )}
+      </NowIndicatorRoot>
+    )
+  }
 
   render() {
     let { props, context } = this
@@ -114,7 +132,7 @@ export class ListView extends DateComponent<ViewProps> {
     let segsByDay = groupSegsByDay(allSegs) // sparse array
 
     return (
-      <NowTimer unit="day">
+      <NowTimer unit="minute">
         {(nowDate: DateMarker, todayRange: DateRange) => {
           let innerNodes: VNode[] = []
 
@@ -135,7 +153,17 @@ export class ListView extends DateComponent<ViewProps> {
 
               daySegs = sortEventSegs(daySegs, options.eventOrder)
 
+              let nowIndicatorRendered = false
+
               for (let seg of daySegs) {
+                let startDate = seg.eventRange.instance.range.start
+
+                if (isSameDateAs(startDate, nowDate) && (startDate > nowDate) && !nowIndicatorRendered) {
+                  nowIndicatorRendered = true
+
+                  innerNodes.push(this.renderNowIndicator(nowDate))
+                }
+
                 innerNodes.push(
                   <ListViewEventRow
                     key={dayStr + ':' + seg.eventRange.instance.instanceId /* are multiple segs for an instanceId */}
@@ -253,6 +281,14 @@ function computeDateVars(dateProfile: DateProfile) {
   }
 
   return { dayDates, dayRanges }
+}
+
+function isSameDateAs(aDate, pDate) {
+  return (
+    (aDate.getUTCFullYear() === pDate.getUTCFullYear()) &&
+    (aDate.getUTCMonth() === pDate.getUTCMonth()) &&
+    (aDate.getUTCDate() === pDate.getUTCDate())
+  )
 }
 
 // Returns a sparse array of arrays, segs grouped by their dayIndex

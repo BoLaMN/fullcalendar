@@ -10,6 +10,30 @@ const DEFAULT_TIME_FORMAT = createFormatter({
 })
 
 export class ListViewEventRow extends BaseComponent<MinimalEventProps> {
+
+  renderCustomColumns(seg) {
+    const { options } = this.context
+    const { eventRange } = seg
+
+    const eventDef = eventRange.def
+
+    const listColumns = options.listColumns || []
+
+    return listColumns.map(function([ columnHeader, columnBody ]) {
+      if (typeof columnBody === 'function') {
+        return columnBody(eventDef, this)
+      } else {
+        const body = getObjectValue(eventDef, columnBody)
+
+        return (
+          <td className={'fc-list-event-column'}>
+            { body ? '' + body : '' }
+          </td>
+        )
+      }
+    })
+  }
+
   render() {
     let { props, context } = this
     let { seg } = props
@@ -40,6 +64,7 @@ export class ListViewEventRow extends BaseComponent<MinimalEventProps> {
             <td className="fc-list-event-title" ref={innerElRef}>
               {innerContent}
             </td>
+            this.renderCustomColumns(seg)
           </tr>
         )}
       </EventRoot>
@@ -135,6 +160,16 @@ function buildTimeContent(seg: Seg, timeFormat: DateFormatter, context: ViewCont
   }
 
   return null
+}
+
+function getObjectValue(obj, path) {
+  if (path == null) { path = '' }
+  return path
+    .split('.')
+    .reduce(function(acc, attr) {
+      if (acc?.[attr] != null) { return acc[attr] }
+    }
+    , obj) || undefined
 }
 
 function renderAllDayInner(hookProps) {
