@@ -21,7 +21,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
 
     const listColumns = options.listColumns || []
 
-    return listColumns.map(function([ columnHeader ]) {
+    return listColumns.map(([ columnHeader ]) => {
       if (typeof columnHeader === 'function') {
         return columnHeader(dayDate, this)
       } else {
@@ -85,7 +85,7 @@ export class ListViewHeaderRow extends BaseComponent<ListViewHeaderRowProps> {
                 {innerContent}
               </div>
             </th>
-            this.renderCustomColumns()
+            { this.renderCustomColumns() }
           </tr>
         )}
       </RenderHook>

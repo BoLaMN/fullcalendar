@@ -19,7 +19,7 @@ export class ListViewEventRow extends BaseComponent<MinimalEventProps> {
 
     const listColumns = options.listColumns || []
 
-    return listColumns.map(function([ columnHeader, columnBody ]) {
+    return listColumns.map(([ columnHeader, columnBody ]) => {
       if (typeof columnBody === 'function') {
         return columnBody(eventDef, this)
       } else {
@@ -64,7 +64,7 @@ export class ListViewEventRow extends BaseComponent<MinimalEventProps> {
             <td className="fc-list-event-title" ref={innerElRef}>
               {innerContent}
             </td>
-            this.renderCustomColumns(seg)
+            { this.renderCustomColumns(seg) }
           </tr>
         )}
       </EventRoot>
