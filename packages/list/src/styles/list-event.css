@@ -16,6 +16,25 @@
     width: 1px;
   }
 
+  & .fc-list-event-now-indicator {
+    border-top: red solid 2px;
+    position: absolute;
+    width: 100%;
+    display: flex;
+
+    &::before {
+      background: red;
+      -webkit-border-radius: 50%;
+      border-radius: 50%;
+      content: "";
+      position: absolute;
+      height: 12px;
+      margin-top: -7px;
+      width: 12px;
+      z-index: 504;
+    }
+  }
+
   & .fc-list-event-dot {
     display: inline-block;
     box-sizing: content-box;

@@ -10,7 +10,7 @@
     var calendarEl = document.getElementById('calendar');
 
     var calendar = new FullCalendar.Calendar(calendarEl, {
-
+      nowIndicator: true,
       headerToolbar: {
         left: 'prev,next today',
         center: 'title',
@@ -23,9 +23,14 @@
         listDay: { buttonText: 'list day' },
         listWeek: { buttonText: 'list week' }
       },
-
-      initialView: 'listWeek',
-      initialDate: '2020-09-12',
+      listColumns: [
+        [
+          'Column 1', // Column Header (gets wrapped in <td>)
+          'title' // Column Body (eventDef.title) (gets wrapped in <td>)
+        ]
+      ],
+      initialView: 'listDay',
+      initialDate: '2021-02-21',
       navLinks: true, // can click day/week names to navigate views
       editable: true,
       dayMaxEvents: true, // allow "more" link when too many events
@@ -56,24 +61,24 @@
         },
         {
           title: 'Meeting',
-          start: '2020-09-12T10:30:00',
-          end: '2020-09-12T12:30:00'
+          start: '2021-02-21T10:30:00',
+          end: '2021-02-21T12:30:00'
         },
         {
           title: 'Lunch',
-          start: '2020-09-12T12:00:00'
+          start: '2021-02-21T12:00:00'
         },
         {
           title: 'Meeting',
-          start: '2020-09-12T14:30:00'
+          start: '2021-02-21T14:30:00'
         },
         {
           title: 'Happy Hour',
-          start: '2020-09-12T17:30:00'
+          start: '2021-02-21T17:30:00'
         },
         {
           title: 'Dinner',
-          start: '2020-09-12T20:00:00'
+          start: '2021-02-21T23:50:00'
         },
         {
           title: 'Birthday Party',

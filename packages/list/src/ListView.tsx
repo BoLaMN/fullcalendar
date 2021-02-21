@@ -51,7 +51,7 @@ export class ListView extends DateComponent<ViewProps> {
         {(rootElRef, classNames, innerElRef, innerContent) => (
           <tr
             ref={rootElRef}
-            className={['fc-list-now-indicator-line'].concat(classNames).join(' ')}
+            className={['fc-list-event-now-indicator'].concat(classNames).join(' ')}
           >
           </tr>
         )}
@@ -128,13 +128,15 @@ export class ListView extends DateComponent<ViewProps> {
   }
 
   renderSegList(allSegs: Seg[], dayDates: DateMarker[]) {
-    let { theme, options } = this.context
+    let { theme, options, viewApi } = this.context
     let segsByDay = groupSegsByDay(allSegs) // sparse array
 
     return (
-      <NowTimer unit="minute">
+      <NowTimer unit={viewApi.type === 'listDay' ? 'minute' : 'day'}>
         {(nowDate: DateMarker, todayRange: DateRange) => {
           let innerNodes: VNode[] = []
+
+          let nowIndicatorRendered = false
 
           for (let dayIndex = 0; dayIndex < segsByDay.length; dayIndex += 1) {
             let daySegs = segsByDay[dayIndex]
@@ -152,8 +154,6 @@ export class ListView extends DateComponent<ViewProps> {
               )
 
               daySegs = sortEventSegs(daySegs, options.eventOrder)
-
-              let nowIndicatorRendered = false
 
               for (let seg of daySegs) {
                 let startDate = seg.eventRange.instance.range.start
